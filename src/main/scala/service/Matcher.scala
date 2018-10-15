@@ -1,8 +1,8 @@
 package service
 
 import java.io.File
-
 import models.{DirectoryObject, FileObject, IOObject}
+import scala.annotation.tailrec
 
 class Matcher (filter: String,
                rootLocation: String = new File(".").getCanonicalPath,
@@ -10,19 +10,20 @@ class Matcher (filter: String,
 
     val rootIOObject = FileConverter.convertToIOObject(new File(rootLocation))
 
-    def recursiveMatch(files: List[IOObject], currentList: List[FileObject]): List[FileObject] = {
-        files match {
-            case List() => currentList
-            case iOObject :: rest =>
-                iOObject match {
-                    case file: FileObject if FilterChecker(filter).matches(file.name) => recursiveMatch(rest, file::currentList)
-                    case directory: DirectoryObject => recursiveMatch(rest ::: directory.children(), currentList)
-                    case _ => recursiveMatch(rest, currentList)
-                }
-        }
-    }
-
     def execute() = {
+        @tailrec
+        def recursiveMatch(files: List[IOObject], currentList: List[FileObject]): List[FileObject] = {
+            files match {
+                case List() => currentList
+                case iOObject :: rest =>
+                    iOObject match {
+                        case file: FileObject if FilterChecker(filter).matches(file.name) => recursiveMatch(rest, file::currentList)
+                        case directory: DirectoryObject => recursiveMatch(rest ::: directory.children(), currentList)
+                        case _ => recursiveMatch(rest, currentList)
+                    }
+            }
+        }
+
         val matchedFiles = rootIOObject match {
             case file : FileObject
                 if FilterChecker(filter).matches(file.name) => List(file)
