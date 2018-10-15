@@ -20,12 +20,12 @@ class Application2 extends FlatSpec{
 }
 
 class Application3 extends FlatSpec{
-    val results = Matcher("txt", new File("readme.txt").getCanonicalPath).execute()
+    val results = new Matcher("txt", new File("readme.txt").getCanonicalPath).execute()
     assert(results == List("readme.txt"))
 }
 
 
 class Application4 extends FlatSpec{
-    val results = Matcher("txt", new File(".").getCanonicalPath).execute()
+    val results = new Matcher("txt", new File(".").getCanonicalPath).execute()
     assert(results == List("readme.txt"))
 }
