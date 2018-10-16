@@ -39,7 +39,18 @@ class Matcher (filter: String,
           case None => matchedFiles
         }
 
-        contentFilterValues.map(iOObject => iOObject.name)
+        val contentFilterValuesWithTuple = contentFilter match {
+            case Some(dataFilter) => {
+                matchedFiles.map(iOObject => (iOObject, Some(FilterChecker(dataFilter).findMatchedContentCount(iOObject.file))))
+                            .filter(matchTuple => matchTuple._2.get > 0)
+            }
+            case None => matchedFiles.map(iOObject=>(iOObject, None))
+        }
+
+//        contentFilterValues.map(iOObject => iOObject.name)
+        contentFilterValuesWithTuple.map{
+            case (iOObject, count) => (iOObject.name, count)
+        }
     }
 }
 
