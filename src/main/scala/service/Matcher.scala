@@ -28,11 +28,9 @@ class Matcher (filter: String,
         val matchedFiles = rootIOObject match {
             case file : FileObject
                 if FilterChecker(filter).matches(file.name) => List(file)
-
             case directory : DirectoryObject =>
                  if (checkSubFolders) recursiveMatch(directory.children(), List())
                 else FilterChecker(filter).findMatchedFiles(directory.children())
-
             case _ => List()
         }
 

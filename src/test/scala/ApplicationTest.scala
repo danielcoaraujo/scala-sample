@@ -24,8 +24,17 @@ class Application3 extends FlatSpec{
     assert(results == List("readme.txt"))
 }
 
-
 class Application4 extends FlatSpec{
     val results = new Matcher("txt", new File(".").getCanonicalPath).execute()
     assert(results == List("readme.txt"))
+}
+
+class Application5 extends FlatSpec{
+    val testMatch = FilterChecker("test").findMatchedContentCount(new File("./testfiles/readme.txt"))
+    assert(testMatch == 6)
+}
+
+class Application6 extends FlatSpec{
+    val testingMatch = FilterChecker("testing").findMatchedContentCount(new File("./testfiles/readme.txt"))
+    assert(testingMatch == 3)
 }
