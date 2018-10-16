@@ -1,6 +1,6 @@
 import java.io.File
 
-import service.{FilterChecker, Matcher}
+import service.{FilterChecker, Matcher, SearchResultWriter}
 
 object Application {
     def main(args: Array[String]): Unit = {
@@ -12,6 +12,7 @@ object Application {
 //        val testingMatch = FilterChecker("testing").findMatchedContentCount(new File("./testfiles/readme.txt"))
 //        assert(testingMatch == 3)
         val results = new Matcher("txt", new File("./testfiles").getCanonicalPath).execute()
+        SearchResultWriter.writeToFile("./testfiles/result.txt", results)
         assert(results == List(("readme.txt", None)))
     }
 }

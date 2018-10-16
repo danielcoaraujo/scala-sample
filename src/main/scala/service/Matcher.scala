@@ -49,7 +49,7 @@ class Matcher (filter: String,
 
 //        contentFilterValues.map(iOObject => iOObject.name)
         contentFilterValuesWithTuple.map{
-            case (iOObject, count) => (iOObject.name, count)
+            case (iOObject, count) => (iOObject.name, Some(count.toString))
         }
     }
 }

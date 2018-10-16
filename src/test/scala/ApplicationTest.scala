@@ -1,7 +1,7 @@
 import java.io.File
 
 import models.{DirectoryObject, FileObject}
-import service.{FilterChecker, Matcher}
+import service.{FilterChecker, Matcher, SearchResultWriter}
 import org.scalatest.FlatSpec
 
 class Application1 extends FlatSpec{
@@ -41,5 +41,11 @@ class Application6 extends FlatSpec{
 
 class Application7 extends FlatSpec{
     val results = new Matcher("txt", new File("./testfiles").getCanonicalPath).execute()
+    assert(results == List(("readme.txt", None)))
+}
+
+class Application8 extends FlatSpec{
+    val results = new Matcher("txt", new File("./testfiles").getCanonicalPath).execute()
+    SearchResultWriter.writeToFile("./testfiles/result.txt", results)
     assert(results == List(("readme.txt", None)))
 }
