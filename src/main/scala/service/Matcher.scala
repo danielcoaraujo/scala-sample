@@ -55,10 +55,7 @@ class Matcher (filter: String,
 
 //        contentFilterValues.map(iOObject => iOObject.name)
         contentFilterValuesWithTuple.map{
-            case (iOObject, count) => (iOObject.name, count match {
-                case Some(value) => Some(value.toString)
-                case None => None
-            })
+            case (iOObject, count) => (iOObject.name, count)
         }
     }
 }
