@@ -18,25 +18,31 @@ class Matcher (filter: String,
                 case List() => currentList
                 case iOObject :: rest =>
                     iOObject match {
-                        case file: FileObject if FilterChecker(filter).matches(file.name) => recursiveMatch(rest, file::currentList)
-                        case directory: DirectoryObject => recursiveMatch(rest ::: directory.children(), currentList)
-                        case _ => recursiveMatch(rest, currentList)
+                        case file: FileObject if FilterChecker(filter).matches(file.name) =>
+                            recursiveMatch(rest, file::currentList)
+                        case directory: DirectoryObject =>
+                            recursiveMatch(rest ::: directory.children(), currentList)
+                        case _ =>
+                            recursiveMatch(rest, currentList)
                     }
             }
         }
 
         val matchedFiles = rootIOObject match {
-            case file : FileObject
-                if FilterChecker(filter).matches(file.name) => List(file)
+            case file : FileObject if FilterChecker(filter).matches(file.name) =>
+                List(file)
             case directory : DirectoryObject =>
                 if (checkSubFolders) recursiveMatch(directory.children(), List())
                 else FilterChecker(filter).findMatchedFiles(directory.children())
-            case _ => List()
+            case _ =>
+                List()
         }
 
         val contentFilterValues = contentFilter match {
-          case Some(dataFilter) => matchedFiles.filter(iOObject => FilterChecker(dataFilter).findMatchedFileContent(iOObject.file))
-          case None => matchedFiles
+          case Some(dataFilter) =>
+              matchedFiles.filter(iOObject => FilterChecker(dataFilter).findMatchedFileContent(iOObject.file))
+          case None =>
+              matchedFiles
         }
 
         val contentFilterValuesWithTuple = contentFilter match {
@@ -49,12 +55,15 @@ class Matcher (filter: String,
 
 //        contentFilterValues.map(iOObject => iOObject.name)
         contentFilterValuesWithTuple.map{
-            case (iOObject, count) => (iOObject.name, Some(count.toString))
+            case (iOObject, count) => (iOObject.name, count match {
+                case Some(value) => Some(value.toString)
+                case None => None
+            })
         }
     }
 }
 
-object Matcher{
-    def apply(filter: String, rootLocation: String, checkSubFolders: Boolean, contentFilter: Option[String]): Matcher =
-      new Matcher(filter, rootLocation, checkSubFolders, contentFilter)
-}
+//object Matcher{
+//    def apply(filter: String, rootLocation: String, checkSubFolders: Boolean, contentFilter: Option[String]): Matcher =
+//      new Matcher(filter, rootLocation, checkSubFolders, contentFilter)
+//}

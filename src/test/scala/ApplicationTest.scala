@@ -19,11 +19,13 @@ class Application2 extends FlatSpec{
     assert(matchedFiles == List(matchedFile))
 }
 
+//To test method contentFilterValues without tuple.
 class Application3 extends FlatSpec{
     val results = new Matcher("txt", new File("readme.txt").getCanonicalPath).execute()
     assert(results == List("readme.txt"))
 }
 
+//To test method contentFilterValues without tuple.
 class Application4 extends FlatSpec{
     val results = new Matcher("txt", new File(".").getCanonicalPath).execute()
     assert(results == List("readme.txt"))
@@ -48,4 +50,10 @@ class Application8 extends FlatSpec{
     val results = new Matcher("txt", new File("./testfiles").getCanonicalPath).execute()
     SearchResultWriter.writeToFile("./testfiles/result.txt", results)
     assert(results == List(("readme.txt", None)))
+}
+
+//To test method contentFilterValues without tuple.
+class Application9 extends FlatSpec{
+    val results = new Matcher("readme.txt", new File(".").getCanonicalPath, true).execute()
+    assert(results == List("readme.txt"))
 }
