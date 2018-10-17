@@ -16,12 +16,15 @@ class FilterChecker(filter : String) {
         }
     }
 
-    def findMatchedFiles(iOObjects: List[IOObject]) =
-        for (iOObject <- iOObjects
-             if iOObject.isInstanceOf[FileObject] && matches(iOObject.name)
-        ) yield iOObject
+    def findMatchedFiles(iOObjects: List[IOObject]) = {
+        iOObjects.filter(iOObject => iOObject.isInstanceOf[FileObject] && matches(iOObject.name))
+    }
+//    def findMatchedFiles(iOObjects: List[IOObject]) =
+//        for (iOObject <- iOObjects
+//             if iOObject.isInstanceOf[FileObject] && matches(iOObject.name)
+//        ) yield iOObject
 
-    def matchesFileContent(file: File) = {
+    def findMatchedFileContent(file: File) = {
         import scala.io.Source
         try {
             val fileSource = Source.fromFile(file)

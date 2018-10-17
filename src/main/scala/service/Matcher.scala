@@ -29,13 +29,13 @@ class Matcher (filter: String,
             case file : FileObject
                 if FilterChecker(filter).matches(file.name) => List(file)
             case directory : DirectoryObject =>
-                 if (checkSubFolders) recursiveMatch(directory.children(), List())
+                if (checkSubFolders) recursiveMatch(directory.children(), List())
                 else FilterChecker(filter).findMatchedFiles(directory.children())
             case _ => List()
         }
 
         val contentFilterValues = contentFilter match {
-          case Some(dataFilter) => matchedFiles.filter(iOObject => FilterChecker(dataFilter).matchesFileContent(iOObject.file))
+          case Some(dataFilter) => matchedFiles.filter(iOObject => FilterChecker(dataFilter).findMatchedFileContent(iOObject.file))
           case None => matchedFiles
         }
 
